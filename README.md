@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pallet Ross — Scroll-Driven Landing Page
 
-## Getting Started
+High-end interactive landing page built from the Awsmd / QClay “Pallet Ross” reference video.
 
-First, run the development server:
+## Stack
+
+- **Next.js** (App Router) + React
+- **Tailwind CSS** v4
+- **GSAP** + ScrollTrigger (pinned hero, scrubbed card fan → stack → cascade)
+- **Lenis** smooth scrolling (wired at root layout)
+
+## Run
 
 ```bash
+cd pallet-ross
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Component | Role |
+|---|---|
+| `SmoothScrollWrapper` | Lenis + GSAP ticker sync |
+| `Navbar` | Fixed brand nav |
+| `ScrollCards` | Intro choreography + scroll-linked fan/stack/cascade + floating `@handles` |
+| `Hero` | Split-word headline + CTAs |
+| `ECommerce` | Section 2 copy (cascade anchors on the right) |
+| `ClassSection` | Autoplay banner + Watch CTA |
+| `Marquee` | Infinite “Trusted by the best” logo belt |
+| `Vision` / `BentoGrid` | Asymmetric grid with hover lift |
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Artwork assets live in `public/card-*.png` and `public/banner-*.png`.
