@@ -12,8 +12,7 @@ import {
   Phone,
   ChevronDown,
 } from "lucide-react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import { useEffect, useRef, useState } from "react";
 import { MENU_CATEGORIES, NAV_LINKS, SITE } from "@/lib/constants";
 import { useTheme } from "@/components/ThemeProvider";
 
@@ -25,9 +24,6 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const { theme, toggle } = useTheme();
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
   const shopCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openShopMenu = () => {
@@ -48,69 +44,37 @@ export default function Navbar() {
 
   useEffect(() => {
     const lenis = (window as unknown as { lenis?: LenisLike }).lenis;
+    const html = document.documentElement;
+
     if (open) {
+      const scrollY = window.scrollY;
+      html.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.inset = "0";
+      document.body.style.width = "100%";
+      document.body.dataset.menuScrollY = String(scrollY);
       lenis?.stop();
     } else {
+      const scrollY = Number(document.body.dataset.menuScrollY || 0);
+      html.style.overflow = "";
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.inset = "";
+      document.body.style.width = "";
+      delete document.body.dataset.menuScrollY;
       lenis?.start();
+      window.scrollTo(0, scrollY);
     }
+
     return () => {
+      html.style.overflow = "";
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.inset = "";
+      document.body.style.width = "";
       lenis?.start();
     };
-  }, [open]);
-
-  useLayoutEffect(() => {
-    const overlay = overlayRef.current;
-    const panel = panelRef.current;
-    if (!overlay || !panel) return;
-
-    const links = panel.querySelectorAll("[data-menu-link]");
-    const meta = panel.querySelectorAll("[data-menu-meta]");
-    const accent = panel.querySelector("[data-menu-accent]");
-
-    gsap.set(overlay, { autoAlpha: 0 });
-    gsap.set(panel, { yPercent: -8, autoAlpha: 0 });
-    gsap.set(links, { y: 48, opacity: 0 });
-    gsap.set(meta, { y: 20, opacity: 0 });
-    gsap.set(accent, { scaleX: 0, transformOrigin: "left center" });
-
-    const tl = gsap.timeline({
-      paused: true,
-      defaults: { ease: "power3.out" },
-    });
-
-    tl.to(overlay, { autoAlpha: 1, duration: 0.35 }, 0)
-      .to(panel, { yPercent: 0, autoAlpha: 1, duration: 0.55 }, 0.05)
-      .to(
-        accent,
-        { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
-        0.2
-      )
-      .to(
-        links,
-        { y: 0, opacity: 1, duration: 0.55, stagger: 0.07 },
-        0.22
-      )
-      .to(
-        meta,
-        { y: 0, opacity: 1, duration: 0.45, stagger: 0.06 },
-        0.48
-      );
-
-    tlRef.current = tl;
-    return () => {
-      tl.kill();
-      tlRef.current = null;
-    };
-  }, []);
-
-  useEffect(() => {
-    const tl = tlRef.current;
-    if (!tl) return;
-    if (open) tl.play(0);
-    else tl.reverse();
   }, [open]);
 
   useEffect(() => {
@@ -362,9 +326,11 @@ export default function Navbar() {
 
       {/* Full-screen mobile menu */}
       <div
-        ref={overlayRef}
-        className="fixed inset-0 z-[55] lg:hidden"
-        style={{ visibility: "hidden" }}
+        className={`fixed inset-0 z-[55] w-screen max-w-[100vw] overflow-hidden lg:hidden ${
+          open
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
+        } transition-opacity duration-300`}
         aria-hidden={!open}
       >
         <div
@@ -373,71 +339,69 @@ export default function Navbar() {
         />
 
         <div
-          ref={panelRef}
-          className="absolute inset-0 flex flex-col overflow-hidden bg-[#F7F1EA] dark:bg-[#1a120c]"
+          data-lenis-prevent
+          className="absolute inset-0 overflow-x-hidden overflow-y-auto overscroll-y-contain bg-[#F7F1EA] dark:bg-[#1a120c]"
           role="dialog"
           aria-modal="true"
           aria-label="Site menu"
         >
-          <div
-            className="pointer-events-none absolute -top-24 -right-16 h-72 w-72 rounded-full opacity-50 blur-3xl"
-            style={{
-              background:
-                "radial-gradient(circle, rgba(92,58,30,0.22), transparent 70%)",
-            }}
-          />
-          <div
-            className="pointer-events-none absolute bottom-0 left-0 h-64 w-64 rounded-full opacity-40 blur-3xl dark:opacity-25"
-            style={{
-              background:
-                "radial-gradient(circle, rgba(196,122,154,0.28), transparent 70%)",
-            }}
-          />
-          <div
-            className="pointer-events-none absolute top-1/3 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full opacity-30 blur-3xl"
-            style={{
-              background:
-                "radial-gradient(circle, rgba(214,245,106,0.35), transparent 70%)",
-            }}
-          />
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div
+              className="absolute -top-24 right-0 h-72 w-72 rounded-full opacity-50 blur-3xl"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(92,58,30,0.22), transparent 70%)",
+              }}
+            />
+            <div
+              className="absolute bottom-0 left-0 h-64 w-64 rounded-full opacity-40 blur-3xl dark:opacity-25"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(196,122,154,0.28), transparent 70%)",
+              }}
+            />
+            <div
+              className="absolute top-1/3 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full opacity-30 blur-3xl"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(214,245,106,0.35), transparent 70%)",
+              }}
+            />
+          </div>
 
-          <div className="relative flex h-full flex-col overflow-y-auto px-6 pt-20 pb-8">
+          <div className="relative mx-auto flex min-h-dvh w-full max-w-full flex-col px-5 pt-20 pb-10 sm:px-6">
             <p className="mb-6 font-heading text-[11px] font-semibold tracking-[3px] text-[#5C3A1E]/55 uppercase dark:text-[#E8D5C4]/50">
               Explore Shally Pastries
             </p>
 
-            <div
-              data-menu-accent
-              className="mb-8 h-px w-full bg-[#5C3A1E] dark:bg-[#E8D5C4]/40"
-            />
+            <div className="mb-6 h-px w-full bg-[#5C3A1E] dark:bg-[#E8D5C4]/40" />
 
-            <nav className="flex flex-1 flex-col justify-center gap-1">
+            <nav className="flex flex-col gap-1">
               {NAV_LINKS.map((item, i) => {
                 const isShop = item.label === "Shop";
 
                 return (
-                  <div key={item.label}>
+                  <div key={item.label} className="min-w-0">
                     <Link
                       href={item.href}
-                      data-menu-link
                       onClick={() => setOpen(false)}
-                      className="group flex items-baseline justify-between border-b border-[#5C3A1E]/10 py-4 dark:border-[#E8D5C4]/12"
+                      className="group flex min-w-0 items-baseline justify-between gap-3 border-b border-[#5C3A1E]/10 py-3.5 dark:border-[#E8D5C4]/12"
                     >
-                      <span className="flex items-baseline gap-3">
-                        <span className="font-heading text-[12px] font-medium tabular-nums text-[#5C3A1E]/40 dark:text-[#E8D5C4]/35">
+                      <span className="flex min-w-0 items-baseline gap-3">
+                        <span className="shrink-0 font-heading text-[12px] font-medium tabular-nums text-[#5C3A1E]/40 dark:text-[#E8D5C4]/35">
                           0{i + 1}
                         </span>
-                        <span className="font-heading text-[clamp(34px,10vw,48px)] font-extrabold tracking-[-0.03em] text-[#1a120c] transition-colors group-hover:text-[#5C3A1E] dark:text-[#F7F1EA] dark:group-hover:text-[#E8D5C4]">
+                        <span className="truncate font-heading text-[clamp(28px,8vw,42px)] font-extrabold tracking-[-0.03em] text-[#1a120c] transition-colors group-hover:text-[#5C3A1E] dark:text-[#F7F1EA] dark:group-hover:text-[#E8D5C4]">
                           {item.label}
                         </span>
                         {"dot" in item && item.dot ? (
-                          <span className="mb-2 inline-block h-2 w-2 rounded-full bg-brand-teal" />
+                          <span className="mb-2 inline-block h-2 w-2 shrink-0 rounded-full bg-brand-teal" />
                         ) : null}
                       </span>
                       <ArrowUpRight
-                        size={22}
+                        size={20}
                         strokeWidth={1.75}
-                        className="translate-y-1 text-[#5C3A1E]/35 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#5C3A1E] dark:text-[#E8D5C4]/35 dark:group-hover:text-[#E8D5C4]"
+                        className="shrink-0 translate-y-1 text-[#5C3A1E]/35 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#5C3A1E] dark:text-[#E8D5C4]/35 dark:group-hover:text-[#E8D5C4]"
                       />
                     </Link>
 
@@ -448,7 +412,7 @@ export default function Navbar() {
                             key={category.slug}
                             href={`/shop#${category.slug}`}
                             onClick={() => setOpen(false)}
-                            className="overflow-hidden rounded-2xl bg-white/60 dark:bg-white/5"
+                            className="min-w-0 overflow-hidden rounded-2xl bg-white/60 dark:bg-white/5"
                           >
                             <div className="relative aspect-square overflow-hidden">
                               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -458,7 +422,7 @@ export default function Navbar() {
                                 className="h-full w-full object-cover"
                               />
                             </div>
-                            <p className="px-2 py-2 font-heading text-[10px] font-semibold leading-tight text-[#1a120c] dark:text-[#F7F1EA]">
+                            <p className="truncate px-2 py-2 font-heading text-[10px] font-semibold leading-tight text-[#1a120c] dark:text-[#F7F1EA]">
                               {category.name}
                             </p>
                           </Link>
@@ -470,11 +434,8 @@ export default function Navbar() {
               })}
             </nav>
 
-            <div className="mt-8 space-y-5">
-              <div
-                data-menu-meta
-                className="flex flex-wrap items-center gap-3"
-              >
+            <div className="mt-auto space-y-5 pt-8">
+              <div className="flex flex-wrap items-center gap-3">
                 <a
                   href={SITE.phoneHref}
                   className="inline-flex items-center gap-2 rounded-full bg-[#5C3A1E] px-5 py-3 font-heading text-[14px] font-semibold text-[#F7F1EA] transition-transform hover:scale-[1.03] dark:bg-[#E8D5C4] dark:text-[#1a120c]"
@@ -493,11 +454,8 @@ export default function Navbar() {
                 </a>
               </div>
 
-              <div
-                data-menu-meta
-                className="flex items-end justify-between gap-4 border-t border-[#5C3A1E]/10 pt-5 dark:border-[#E8D5C4]/12"
-              >
-                <div>
+              <div className="flex items-end justify-between gap-4 border-t border-[#5C3A1E]/10 pt-5 dark:border-[#E8D5C4]/12">
+                <div className="min-w-0">
                   <p className="font-heading text-[11px] font-semibold tracking-[2px] text-[#5C3A1E]/45 uppercase dark:text-[#E8D5C4]/45">
                     Reach us
                   </p>
