@@ -45,9 +45,9 @@ const TOP_INDEX = FAN.length - 1;
 // The three cards the single card opens into — the middle one keeps the hero
 // card's image so the split is seamless; the siblings reveal other bakes.
 const MENU_IMAGES = [
-  { src: CARD_IMAGES[2], label: "Milky donuts" },
-  { src: CARD_IMAGES[TOP_INDEX], label: "Birthday cakes" },
-  { src: CARD_IMAGES[4], label: "Celebration cakes" },
+  { src: CARD_IMAGES[2], label: "Custom cakes" },
+  { src: CARD_IMAGES[TOP_INDEX], label: "Meat pies" },
+  { src: CARD_IMAGES[4], label: "Fresh donuts" },
 ] as const;
 
 const SC_HEADING = [

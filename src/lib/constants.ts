@@ -108,13 +108,13 @@ export const INVESTMENT_PILLARS = [
 ] as const;
 
 export const CARD_IMAGES = [
-  "/cakes.PNG",
-  "/cake.PNG",
-  "/milky donut.PNG",
-  "/small-chops.PNG",
-  "/cakess.PNG",
-  "/yoghurt.PNG",
-  "/cakesss.PNG",
+  "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&h=700&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&h=700&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&h=700&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1550547660-d9450f859349?w=600&h=700&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600&h=700&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&h=700&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=700&fit=crop&q=80",
 ] as const;
 
 export const GATEWAY_SLIDES = [
