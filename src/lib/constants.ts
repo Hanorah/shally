@@ -117,27 +117,6 @@ export const CARD_IMAGES = [
   "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=700&fit=crop&q=80",
 ] as const;
 
-export const GATEWAY_SLIDES = [
-  {
-    image: "/cakes.PNG",
-    caption: "Shally Pastries",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1400&h=900&fit=crop&q=80",
-    caption: "Shally Pastries Training",
-  },
-  {
-    image: "/shally-%20deliveries.PNG",
-    caption: "Shally Logistics",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&h=900&fit=crop&q=80",
-    caption: "Shally Investments",
-  },
-] as const;
-
 /** Six favourite foods — used by the homepage MenuCascade section */
 export const MENU_CASCADE_ITEMS = [
   {
@@ -289,6 +268,7 @@ export const MARKETPLACE_ITEMS = [
 export const MENU_CATEGORIES = [
   {
     name: "Custom Cakes",
+    slug: "custom-cakes",
     description: "Birthday, wedding, and celebration cakes made to order.",
     items: [
       {
@@ -317,6 +297,7 @@ export const MENU_CATEGORIES = [
   },
   {
     name: "Everyday Favourites",
+    slug: "everyday-favourites",
     description: "The bites customers keep coming back for.",
     items: [
       {
@@ -346,6 +327,7 @@ export const MENU_CATEGORIES = [
   },
   {
     name: "Event Food Trays",
+    slug: "event-food-trays",
     description: "Party platters for celebrations, offices, and gatherings.",
     items: [
       {

@@ -38,7 +38,7 @@ export default function ShopView() {
 
         <div className="mt-14 space-y-16">
           {MENU_CATEGORIES.map((category) => (
-            <section key={category.name}>
+            <section key={category.name} id={category.slug} className="scroll-mt-28">
               <Reveal>
                 <h2 className="font-heading text-[clamp(24px,3vw,32px)] font-extrabold tracking-[-0.02em] text-foreground">
                   {category.name}

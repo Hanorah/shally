@@ -1,21 +1,29 @@
 "use client";
 
 import { useRef } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { TRUSTED_LOGOS } from "@/lib/constants";
 
-function LogoMark({ name }: { name: string }) {
+const LOGO_COLORS = [
+  "bg-brand-red",
+  "bg-brand-orange",
+  "bg-brand-lime",
+  "bg-brand-teal",
+  "bg-brand-blue",
+  "bg-brand-purple",
+  "bg-brand-green",
+  "bg-brand-orange",
+  "bg-brand-teal",
+] as const;
+
+function LogoMark({ name, color }: { name: string; color: string }) {
   return (
-    <div className="flex h-10 shrink-0 items-center gap-2.5 px-8 opacity-50">
-      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden>
-        <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.18" />
-        <path
-          d="M7 12h10M12 7v10"
-          stroke="currentColor"
-          strokeWidth="2"
-          fill="none"
-        />
-      </svg>
+    <div className="flex h-10 shrink-0 items-center gap-3 px-6 sm:px-8">
+      <span
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${color}`}
+      >
+        <Plus size={16} strokeWidth={2.5} className="text-[#111]" />
+      </span>
       <span className="font-heading text-lg font-semibold tracking-tight text-foreground">
         {name}
       </span>
@@ -65,11 +73,15 @@ export default function Marquee() {
 
       <div
         ref={scrollerRef}
-        className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 scrollbar-none sm:px-8"
+        className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-5 scrollbar-none sm:gap-2 sm:px-8"
         style={{ scrollbarWidth: "none" }}
       >
-        {TRUSTED_LOGOS.map((name) => (
-          <LogoMark key={name} name={name} />
+        {TRUSTED_LOGOS.map((name, i) => (
+          <LogoMark
+            key={name}
+            name={name}
+            color={LOGO_COLORS[i % LOGO_COLORS.length]}
+          />
         ))}
       </div>
     </section>
