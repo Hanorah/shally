@@ -260,114 +260,98 @@ export default function Navbar() {
           onMouseLeave={() => closeShopMenu(80)}
           aria-hidden={!shopOpen}
         >
-          <div className="mx-auto grid max-w-7xl gap-6 px-8 py-7 xl:grid-cols-[1.4fr_0.85fr]">
-            <div>
-              <div className="mb-4 flex items-end justify-between gap-4">
-                <div>
-                  <p className="font-heading text-[11px] font-medium tracking-[2.5px] text-muted-light uppercase">
-                    Shop by category
-                  </p>
-                  <p className="mt-1 font-heading text-[22px] font-extrabold tracking-[-0.03em] text-foreground">
-                    Order from Shally Pastries
-                  </p>
-                </div>
-                <Link
-                  href="/shop"
-                  onClick={() => setShopOpen(false)}
-                  className="inline-flex items-center gap-1 font-heading text-[13px] font-semibold text-foreground transition-opacity hover:opacity-60"
-                >
-                  View full shop
-                  <ArrowUpRight size={14} />
-                </Link>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-3">
-                {MENU_CATEGORIES.map((category) => (
+          <div className="mx-auto grid max-w-7xl gap-10 px-8 py-8 xl:grid-cols-[1fr_280px]">
+            <div className="grid grid-cols-3 gap-8">
+              {MENU_CATEGORIES.map((category) => (
+                <div key={category.slug}>
                   <Link
-                    key={category.slug}
                     href={`/shop#${category.slug}`}
                     onClick={() => setShopOpen(false)}
-                    className="group overflow-hidden rounded-[20px] border border-border bg-surface transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)]"
+                    className="group inline-flex items-center gap-1.5 font-heading text-[14px] font-bold text-foreground transition-opacity hover:opacity-60"
                   >
-                    <div className="relative aspect-[5/4] overflow-hidden bg-surface-muted">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={category.items[0].image}
-                        alt={category.name}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
-                      <span className="absolute bottom-3 left-3 font-heading text-[13px] font-semibold text-white">
-                        {category.items.length} items
-                      </span>
-                    </div>
-                    <div className="p-3.5">
-                      <p className="font-heading text-[14px] font-semibold text-foreground">
-                        {category.name}
-                      </p>
-                      <p className="mt-1 line-clamp-2 font-body text-[12px] leading-snug text-muted">
-                        {category.description}
-                      </p>
-                    </div>
+                    {category.name}
+                    <ArrowUpRight
+                      size={13}
+                      className="opacity-0 transition-all duration-200 group-hover:opacity-100"
+                    />
                   </Link>
-                ))}
-              </div>
+                  <p className="mt-1.5 font-body text-[12px] leading-snug text-muted">
+                    {category.description}
+                  </p>
+                  <ul className="mt-4 space-y-2.5 border-t border-border pt-4">
+                    {category.items.map((item) => (
+                      <li key={item.id}>
+                        <Link
+                          href={`/shop#${category.slug}`}
+                          onClick={() => setShopOpen(false)}
+                          className="group flex items-baseline justify-between gap-3 font-body text-[13px] text-muted transition-colors hover:text-foreground"
+                        >
+                          <span>{item.name}</span>
+                          <span className="shrink-0 font-heading text-[11px] font-medium text-muted-light">
+                            {item.price}
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-4 border-t border-border pt-6 xl:border-t-0 xl:border-l xl:pt-0 xl:pl-8">
               <Link
-                href={`/shop#${MENU_CATEGORIES[0].slug}`}
+                href="/shop"
                 onClick={() => setShopOpen(false)}
-                className="group relative flex min-h-[220px] flex-1 overflow-hidden rounded-[22px]"
+                className="group relative block overflow-hidden rounded-[18px]"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={FEATURED_PRODUCT.image}
-                  alt={FEATURED_PRODUCT.name}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-                <div className="relative mt-auto flex w-full flex-col justify-end p-5">
-                  <p className="font-heading text-[11px] font-medium tracking-[2px] text-white/70 uppercase">
-                    Featured
-                  </p>
-                  <p className="mt-1 font-heading text-[22px] font-extrabold tracking-[-0.02em] text-white">
-                    {FEATURED_PRODUCT.name}
-                  </p>
-                  <p className="mt-1 font-body text-[13px] text-white/80">
-                    {FEATURED_PRODUCT.price}
-                  </p>
-                  <span className="mt-3 inline-flex w-fit items-center gap-1 rounded-full bg-white px-3.5 py-1.5 font-heading text-[12px] font-semibold text-[#111]">
-                    Order now
-                    <ArrowUpRight size={13} />
-                  </span>
+                <div className="relative aspect-[16/10] overflow-hidden bg-surface-muted">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={FEATURED_PRODUCT.image}
+                    alt={FEATURED_PRODUCT.name}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+                  <div className="absolute inset-x-4 bottom-3.5">
+                    <p className="font-heading text-[15px] font-bold text-white">
+                      {FEATURED_PRODUCT.name}
+                    </p>
+                    <p className="font-body text-[12px] text-white/80">
+                      {FEATURED_PRODUCT.price}
+                    </p>
+                  </div>
                 </div>
               </Link>
 
-              <div className="rounded-[20px] border border-border bg-surface px-4 py-4">
-                <p className="font-heading text-[13px] font-semibold text-foreground">
-                  Need something custom?
-                </p>
-                <p className="mt-1 font-body text-[12px] leading-snug text-muted">
-                  Call or WhatsApp and we&apos;ll help with cakes, trays, and
-                  event orders.
+              <Link
+                href="/shop"
+                onClick={() => setShopOpen(false)}
+                className="inline-flex items-center gap-1 font-heading text-[13px] font-semibold text-foreground transition-opacity hover:opacity-60"
+              >
+                View the full shop
+                <ArrowUpRight size={14} />
+              </Link>
+
+              <div className="mt-auto border-t border-border pt-4">
+                <p className="font-body text-[12px] leading-snug text-muted">
+                  Need something custom? Call or WhatsApp {SITE.phone}.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <a
                     href={SITE.whatsapp}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 rounded-full bg-foreground px-3.5 py-2 font-heading text-[12px] font-semibold text-background"
+                    className="inline-flex items-center gap-1 font-heading text-[12px] font-semibold text-foreground underline underline-offset-4 transition-opacity hover:opacity-60"
                   >
                     WhatsApp
-                    <ArrowUpRight size={12} />
                   </a>
+                  <span className="text-muted-light">·</span>
                   <a
                     href={SITE.phoneHref}
-                    className="inline-flex items-center gap-1 rounded-full border border-border px-3.5 py-2 font-heading text-[12px] font-semibold text-foreground"
+                    className="inline-flex items-center gap-1 font-heading text-[12px] font-semibold text-foreground underline underline-offset-4 transition-opacity hover:opacity-60"
                   >
-                    <Phone size={12} />
-                    {SITE.phone}
+                    <Phone size={11} />
+                    Call
                   </a>
                 </div>
               </div>

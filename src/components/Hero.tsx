@@ -424,7 +424,7 @@ export default function Hero() {
     >
       <div
         data-hero-heading
-        className="pointer-events-none absolute inset-x-0 top-[26%] z-20 flex flex-col items-center px-5 text-center sm:top-0 sm:px-6 sm:pt-[60px] md:pt-[68px]"
+        className="pointer-events-none absolute inset-x-0 top-0 z-20 flex flex-col items-center px-5 pt-[170px] text-center sm:px-6 sm:pt-[104px] md:pt-[112px]"
       >
         <h1 className="font-heading max-w-[900px] text-[40px] font-extrabold leading-[1.02] tracking-[-0.03em] text-foreground sm:text-[clamp(36px,6.5vw,72px)]">
           {["Shally", "Pastries"].map((word, i) => (
@@ -439,7 +439,7 @@ export default function Hero() {
         </h1>
         <p
           data-hero-copy
-          className="mt-3 max-w-[300px] font-body text-[15px] leading-relaxed text-muted sm:mt-4 sm:max-w-md sm:text-[15px]"
+          className="mt-2.5 max-w-[280px] font-body text-[14px] leading-relaxed text-muted sm:mt-4 sm:max-w-md sm:text-[15px]"
         >
           Cakes, pastries, training, deliveries, and the business behind them.
         </p>
