@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: `Trainings — ${SITE.name}`,
   description:
-    "Pay to learn baking with Shally's Pastries. Starter, Pro, and Master packages in Benin City.",
+    "Apply for practical pastry training at Shally Pastries, with accommodation options for longer programmes.",
 };
 
 export default function TrainingsPage() {

@@ -8,7 +8,7 @@ const ACCENTS = ["var(--brand-orange)", "var(--brand-purple)", "var(--brand-teal
 
 export default function MenuView() {
   return (
-    <div className="px-6 pb-24 md:px-16">
+    <div className="px-5 pb-20 sm:px-6 sm:pb-24 md:px-16">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="mb-3 font-heading text-[11px] font-medium tracking-[2.5px] text-muted-light uppercase">
@@ -19,11 +19,15 @@ export default function MenuView() {
           </h1>
           <p className="mt-4 max-w-xl font-body text-[16px] leading-relaxed text-muted">
             From yummy meat pies and fresh donuts to custom cakes and party
-            trays. Call{" "}
+            trays.{" "}
+            <a href="/shop" className="font-semibold text-foreground">
+              Order online
+            </a>{" "}
+            or call{" "}
             <a href={SITE.phoneHref} className="font-semibold text-foreground">
               {SITE.phone}
-            </a>{" "}
-            to place an order.
+            </a>
+            .
           </p>
         </Reveal>
 
@@ -123,15 +127,15 @@ export default function MenuView() {
               Ready to order?
             </h2>
             <p className="relative mt-2 max-w-md font-body text-white/85">
-              Visit us at {SITE.address}, or call / WhatsApp to reserve cakes and
+              Order online in the shop, or call / WhatsApp to reserve cakes and
               trays.
             </p>
             <div className="relative mt-6 flex flex-wrap gap-3">
               <a
-                href={SITE.phoneHref}
+                href="/shop"
                 className="rounded-full bg-white px-6 py-3 font-heading text-sm font-semibold text-[#111] transition-transform hover:scale-105"
               >
-                Call {SITE.phone}
+                Open shop
               </a>
               <a
                 href={SITE.whatsapp}

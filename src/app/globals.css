@@ -111,6 +111,15 @@ body {
   }
 }
 
+@keyframes drawer-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 /* Avoid Tailwind's animate-* naming so these aren't overridden */
 .marquee-track {
   animation: marquee 32s linear infinite;
@@ -122,4 +131,29 @@ body {
 
 .animate-marquee-slow {
   animation: marquee 40s linear infinite;
+}
+
+.drawer-slide-in {
+  animation: drawer-slide-in 0.28s ease-out both;
+}
+
+@keyframes drawer-step-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.drawer-step-in {
+  animation: drawer-step-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.glass-nav {
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
 }

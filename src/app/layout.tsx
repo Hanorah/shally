@@ -13,9 +13,9 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
-  title: `${SITE.name} — Cakes, Meat Pies & Fresh Pastries in Benin City`,
+  title: `${SITE.name} — Training, Logistics & Investments`,
   description:
-    "Custom cakes, meat pies, donuts, burgers, and event food trays. Baking trainings and orders at 166 New Lagos Road, Uselu. Call 08101561840.",
+    "Explore Shally Pastries, Shally Pastries Training, Shally Logistics bike delivery, and Shally Investments.",
 };
 
 const themeInitScript = `(function(){try{if("scrollRestoration" in history){history.scrollRestoration="manual";}window.scrollTo(0,0);var t=localStorage.getItem("theme");var d=window.matchMedia("(prefers-color-scheme: dark)").matches;var theme=t==="light"||t==="dark"?t:d?"dark":"light";document.documentElement.classList.toggle("dark",theme==="dark");document.documentElement.style.colorScheme=theme;}catch(e){}})();`;
@@ -30,7 +30,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="grain min-h-full bg-background font-sans text-foreground">
+      <body
+        className="grain min-h-full bg-background font-sans text-foreground"
+        suppressHydrationWarning
+      >
         <ThemeProvider>
           <Preloader />
           <SmoothScroll>{children}</SmoothScroll>

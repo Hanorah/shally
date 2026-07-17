@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SITE } from "@/lib/constants";
 
 type LenisLike = { stop: () => void; start: () => void };
 
@@ -52,10 +54,14 @@ export default function Preloader() {
       }`}
     >
       <div className="flex items-start justify-between">
-        <span className="flex items-center gap-2 font-heading text-sm font-semibold tracking-tight text-foreground">
-          <span className="h-2.5 w-2.5 rounded-full bg-brand-purple" />
-          Shally&apos;s Pastries
-        </span>
+        <Image
+          src="/logo-shally.png"
+          alt={SITE.name}
+          width={220}
+          height={80}
+          priority
+          className="h-14 w-auto object-contain md:h-16"
+        />
         <span className="font-heading text-[11px] font-medium tracking-[2.5px] text-muted-light uppercase">
           Fresh from the oven
         </span>
@@ -67,13 +73,13 @@ export default function Preloader() {
         </span>
         <span className="font-heading text-[clamp(72px,20vw,220px)] leading-[0.85] font-extrabold tracking-[-0.04em] text-foreground tabular-nums">
           {count}
-          <span className="text-brand-purple">%</span>
+          <span className="text-[#5C3A1E]">%</span>
         </span>
       </div>
 
       <div className="mt-6 h-[3px] w-full overflow-hidden rounded-full bg-border">
         <div
-          className="h-full rounded-full bg-foreground transition-[width] duration-150 ease-out"
+          className="h-full rounded-full bg-[#5C3A1E] transition-[width] duration-150 ease-out"
           style={{ width: `${count}%` }}
         />
       </div>

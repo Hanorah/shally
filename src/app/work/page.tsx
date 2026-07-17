@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: `Our Work — ${SITE.name}`,
   description:
-    "Cakes, trays, pastries, and training moments from Shally's Pastries in Benin City.",
+    "Cakes, trays, pastries, and training moments from Shally Pastries.",
 };
 
 export default function WorkPage() {

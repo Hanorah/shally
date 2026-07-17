@@ -1,41 +1,36 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { SITE, NAV_LINKS } from "@/lib/constants";
-
-function Logo() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
-      <path d="M8 4 L16 10 L10 18 L2 12 Z" fill="#4ECDC4" />
-      <path d="M12 8 L20 14 L14 22 L6 16 Z" fill="#4ECDC4" opacity="0.85" />
-    </svg>
-  );
-}
 
 export default function Footer() {
   return (
-    <footer id="contact" className="relative z-10 bg-background px-6 pb-10 md:px-16">
-      <div className="mx-auto max-w-6xl rounded-[28px] bg-surface-muted px-8 py-14 md:px-12 md:py-16">
-        <div className="grid gap-12 md:grid-cols-12">
+    <footer id="contact" className="relative z-10 bg-background px-5 pb-8 sm:px-6 sm:pb-10 md:px-16">
+      <div className="mx-auto max-w-6xl rounded-[22px] bg-surface-muted px-5 py-10 sm:rounded-[28px] sm:px-8 sm:py-14 md:px-12 md:py-16">
+        <div className="grid gap-10 sm:gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
-            <div className="mb-3 flex items-center gap-2">
-              <Logo />
-              <span className="font-heading text-[15px] font-semibold text-foreground">
-                {SITE.name}
-              </span>
+            <div className="mb-4">
+              <Image
+                src="/logo-shally.png"
+                alt={SITE.name}
+                width={220}
+                height={80}
+                className="h-14 w-auto object-contain sm:h-16"
+              />
             </div>
-            <h2 className="font-heading text-[clamp(28px,3.8vw,42px)] font-extrabold tracking-[-0.03em] text-foreground">
-              Our kitchen,{" "}
+            <h2 className="font-heading text-[clamp(26px,6.5vw,42px)] font-extrabold tracking-[-0.03em] text-foreground">
+              Need something{" "}
               <span className="inline-flex items-center gap-2">
-                your table
+                from Shally?
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface text-sm">
                   ···
                 </span>
               </span>
             </h2>
             <p className="mt-4 max-w-sm font-body text-sm leading-relaxed text-muted">
-              Custom cakes, meat pies, donuts, burgers, and event trays — baked
-              fresh in Uselu, Benin City. Call to order or join a training.
+              Order pastries, apply for training, ask about delivery, or start a
+              business conversation. The fastest way is still a call or WhatsApp.
             </p>
             <p className="mt-4 font-body text-sm text-muted">
               <a
@@ -45,7 +40,7 @@ export default function Footer() {
                 {SITE.phone}
               </a>
               <br />
-              {SITE.address}
+              {SITE.hours}
             </p>
           </div>
 
@@ -65,10 +60,10 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/menu"
+                  href="/shop"
                   className="font-body text-sm text-foreground/70 transition-colors hover:text-foreground"
                 >
-                  Order from menu
+                  Order online
                 </Link>
               </li>
               <li>
@@ -78,7 +73,7 @@ export default function Footer() {
                 >
                   Pay to learn
                   <span className="rounded-full bg-[#E11D74] px-2 py-0.5 text-[10px] font-semibold text-white">
-                    New
+                    Stay included
                   </span>
                 </Link>
               </li>
@@ -89,7 +84,7 @@ export default function Footer() {
                   rel="noreferrer"
                   className="font-body text-sm text-foreground/70 transition-colors hover:text-foreground"
                 >
-                  WhatsApp order
+                  WhatsApp
                 </a>
               </li>
             </ul>
@@ -104,18 +99,18 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/contact"
+                  href="/logistics"
                   className="font-body text-sm text-foreground/70 transition-colors hover:text-foreground"
                 >
-                  Find the store
+                  Get a logistics quote
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/work"
+                  href="/investments"
                   className="font-body text-sm text-foreground/70 transition-colors hover:text-foreground"
                 >
-                  Gallery
+                  Investment enquiry
                 </Link>
               </li>
             </ul>
@@ -126,7 +121,7 @@ export default function Footer() {
           <p className="font-body text-sm text-muted-light">
             © {new Date().getFullYear()} {SITE.name}. All rights reserved.
           </p>
-          <p className="font-body text-sm text-muted-light">{SITE.city}</p>
+          <p className="font-body text-sm text-muted-light">{SITE.tagline}</p>
         </div>
       </div>
     </footer>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -9,12 +9,39 @@ import { MARKETPLACE_ITEMS } from "@/lib/constants";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const VISIBLE = 4;
+const CARD_GAP = 16;
 
 export default function Marketplace() {
   const ref = useRef<HTMLElement>(null);
   const [index, setIndex] = useState(0);
-  const maxIndex = Math.max(0, MARKETPLACE_ITEMS.length - VISIBLE);
+  const [visible, setVisible] = useState(4);
+  const [cardW, setCardW] = useState(160);
+
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      if (w < 640) {
+        setVisible(2);
+        setCardW(140);
+      } else if (w < 1024) {
+        setVisible(3);
+        setCardW(160);
+      } else {
+        setVisible(4);
+        setCardW(160);
+      }
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const step = cardW + CARD_GAP;
+  const maxIndex = Math.max(0, MARKETPLACE_ITEMS.length - visible);
+
+  useEffect(() => {
+    setIndex((i) => Math.min(i, maxIndex));
+  }, [maxIndex]);
 
   useLayoutEffect(() => {
     const el = ref.current;
@@ -51,25 +78,35 @@ export default function Marketplace() {
   return (
     <section
       ref={ref}
-      className="relative z-10 bg-background px-6 py-20 md:px-16"
+      className="relative z-10 bg-background px-5 py-14 sm:px-6 sm:py-20 md:px-16"
     >
-      <div className="mx-auto grid max-w-6xl gap-x-10 gap-y-10 lg:grid-cols-12 lg:items-start">
+      <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-12 lg:items-start lg:gap-x-10 lg:gap-y-10">
         <div data-market-head className="lg:col-span-4">
-          <p className="mb-3 font-heading text-[11px] font-bold tracking-[2.5px] uppercase">
-            <span className="text-foreground">Get more </span>
-            <span className="text-brand-purple">tasty.</span>
-          </p>
-          <h2 className="font-heading text-[clamp(32px,4.2vw,52px)] font-extrabold leading-[1.05] tracking-[-0.03em] text-foreground">
-            Favourites from
-            <br />
-            the oven
-          </h2>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="mb-3 font-heading text-[11px] font-bold tracking-[2.5px] uppercase">
+                <span className="text-foreground">Shally </span>
+                <span className="text-brand-purple">Pastries</span>
+              </p>
+              <h2 className="font-heading text-[clamp(28px,7vw,52px)] font-extrabold leading-[1.05] tracking-[-0.03em] text-foreground">
+                Cakes, pastries
+                <br />
+                & event trays
+              </h2>
+            </div>
+            <Link
+              href="/shop"
+              className="shrink-0 rounded-full bg-brand-purple px-4 py-2.5 font-heading text-[13px] font-semibold text-white transition-transform hover:scale-105 sm:px-5 lg:hidden"
+            >
+              Shop
+            </Link>
+          </div>
           <p className="mt-4 max-w-xs font-body text-[14px] leading-relaxed text-muted">
             Meat pies, donuts, burgers, custom cakes, and event trays — baked
-            fresh daily at our Uselu kitchen.
+            fresh and ready to order online.
           </p>
 
-          <div className="mt-10 hidden gap-2 lg:flex">
+          <div className="mt-8 hidden gap-2 lg:flex">
             <button
               type="button"
               aria-label="Previous"
@@ -91,21 +128,21 @@ export default function Marketplace() {
           </div>
         </div>
 
-        <div className="lg:col-span-8">
-          <div className="mb-6 flex justify-end">
+        <div className="min-w-0 lg:col-span-8">
+          <div className="mb-5 hidden justify-end lg:flex">
             <Link
-              href="/menu"
+              href="/shop"
               className="rounded-full bg-brand-purple px-6 py-2.5 font-heading text-sm font-semibold text-white transition-transform hover:scale-105"
             >
-              View All
+              Shop now
             </Link>
           </div>
 
-          <div className="overflow-hidden">
+          <div className="-mx-5 overflow-hidden px-5 sm:mx-0 sm:px-0">
             <div
               className="flex gap-4 transition-transform duration-500 ease-out"
               style={{
-                transform: `translateX(calc(-${index} * (160px + 16px)))`,
+                transform: `translateX(-${index * step}px)`,
               }}
             >
               {MARKETPLACE_ITEMS.map((item) => (
@@ -114,7 +151,7 @@ export default function Marketplace() {
                   data-market-card
                   className="w-[140px] shrink-0 sm:w-[160px]"
                 >
-                  <div className="aspect-square overflow-hidden rounded-[18px] bg-surface-muted">
+                  <div className="aspect-square overflow-hidden rounded-[16px] bg-surface-muted sm:rounded-[18px]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={item.image}
@@ -122,7 +159,7 @@ export default function Marketplace() {
                       className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                     />
                   </div>
-                  <h3 className="mt-3 font-heading text-[13px] font-semibold text-foreground">
+                  <h3 className="mt-2.5 font-heading text-[13px] font-semibold text-foreground sm:mt-3">
                     {item.title}
                   </h3>
                 </article>
@@ -130,7 +167,7 @@ export default function Marketplace() {
             </div>
           </div>
 
-          <div className="mt-8 flex items-center gap-5">
+          <div className="mt-6 flex items-center gap-4 sm:mt-8 sm:gap-5">
             <div className="flex shrink-0 gap-2 lg:hidden">
               <button
                 type="button"

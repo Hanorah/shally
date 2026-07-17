@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: `Contact — ${SITE.name}`,
-  description: `Visit Shally's Pastries at ${SITE.address}. Call ${SITE.phone} to order cakes, pastries, and trays.`,
+  description: `Call or WhatsApp ${SITE.phone} for pastry orders, trainings, logistics quotes, and investment enquiries.`,
 };
 
 export default function ContactPage() {

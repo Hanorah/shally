@@ -16,6 +16,7 @@ const BRAND = "#6B2D4A";
 // so the single card that gathers at centre literally splits into three.
 const MENU_CENTER = 1; // middle card = the one that arrived from the hero
 const MENU_CARD_W = 192; // matches the hero card's large width
+const MENU_CARD_H = 220;
 const MENU_GAP = 24;
 const MENU_STEP = MENU_CARD_W + MENU_GAP;
 
@@ -44,16 +45,15 @@ const TOP_INDEX = FAN.length - 1;
 // The three cards the single card opens into — the middle one keeps the hero
 // card's image so the split is seamless; the siblings reveal other bakes.
 const MENU_IMAGES = [
-  CARD_IMAGES[2],
-  CARD_IMAGES[TOP_INDEX],
-  CARD_IMAGES[4],
+  { src: CARD_IMAGES[2], label: "Milky donuts" },
+  { src: CARD_IMAGES[TOP_INDEX], label: "Birthday cakes" },
+  { src: CARD_IMAGES[4], label: "Celebration cakes" },
 ] as const;
 
 const SC_HEADING = [
-  { t: "Cakes, pies", br: true },
-  { t: "&", br: false, accent: true },
-  { t: "baked", br: false, accent: true },
-  { t: "fresh.", br: false, accent: true },
+  { t: "Choose what", br: true },
+  { t: "you", br: false, accent: true },
+  { t: "need.", br: false, accent: true },
 ] as const;
 
 export default function Hero() {
@@ -72,14 +72,15 @@ export default function Hero() {
         isMobile: "(max-width: 639.98px)",
       },
       (self) => {
-        const { isDesktop, isTablet } = self.conditions as {
+        const { isDesktop, isTablet, isMobile } = self.conditions as {
           isDesktop: boolean;
           isTablet: boolean;
           isMobile: boolean;
         };
 
-        const fanScale = isDesktop ? 1 : isTablet ? 0.82 : 0.46;
-        const casScale = isDesktop ? 1 : isTablet ? 0.82 : 0.5;
+        // Tighter fan on phones so cards sit closer to the heading/CTA.
+        const fanScale = isDesktop ? 1 : isTablet ? 0.82 : 0.55;
+        const casScale = isDesktop ? 1 : isTablet ? 0.82 : 0.42;
         const ox = () =>
           isDesktop
             ? window.innerWidth * 0.22
@@ -91,7 +92,7 @@ export default function Hero() {
             ? window.innerHeight * 0.08
             : isTablet
               ? window.innerHeight * 0.1
-              : window.innerHeight * 0.16;
+              : window.innerHeight * 0.22;
 
         const stack = root.querySelector<HTMLElement>("[data-stack]");
         const cards = gsap.utils.toArray<HTMLElement>("[data-card]");
@@ -110,6 +111,25 @@ export default function Hero() {
         // so the gather → split reads as one continuous card.
         const heroCardW = isDesktop ? 192 : isTablet ? 162 : 134;
         const menuScale = heroCardW / MENU_CARD_W;
+        const finalW = isDesktop
+          ? 240
+          : isTablet
+            ? 210
+            : Math.min(340, window.innerWidth - 28);
+        const finalH = isDesktop
+          ? 210
+          : isTablet
+            ? 180
+            : Math.round(finalW * 0.58);
+        const menuGap = isDesktop ? 22 : isTablet ? 18 : 12;
+
+        const menuFinalPos = (i: number) => {
+          const dir = i - MENU_CENTER;
+          if (isMobile) {
+            return { x: 0, y: dir * (finalH + menuGap) };
+          }
+          return { x: dir * (finalW + menuGap), y: 0 };
+        };
 
         cards.forEach((card, i) => {
           gsap.set(card, {
@@ -139,6 +159,8 @@ export default function Hero() {
             yPercent: -50,
             x: 0,
             y: 0,
+            width: MENU_CARD_W,
+            height: MENU_CARD_H,
             rotate: 0,
             scale: 1,
             opacity: 1,
@@ -147,6 +169,8 @@ export default function Hero() {
         });
         gsap.set(menuHeading, { opacity: 0, y: 18 });
         gsap.set(menuCta, { opacity: 0, y: 14 });
+        const menuTags = gsap.utils.toArray<HTMLElement>("[data-menu-tag]");
+        gsap.set(menuTags, { opacity: 0, y: 10, scale: 0.9 });
 
         let scene: gsap.core.Timeline | null = null;
 
@@ -326,7 +350,7 @@ export default function Hero() {
               card,
               {
                 x: 0,
-                y: () => -window.innerHeight * 0.1,
+                y: () => (isMobile ? 0 : -window.innerHeight * 0.1),
                 rotate: 0,
                 scale: 1,
                 opacity: i === TOP_INDEX ? 1 : 0,
@@ -344,17 +368,40 @@ export default function Hero() {
           scene.to(cards, { opacity: 0, duration: 0.2 }, 3.3);
           scene.to(menuHeading, { opacity: 1, y: 0, duration: 0.4 }, 3.35);
 
-          // That one card opens into three.
+          // Split, grow width/height, and open gaps — then tags appear.
+          scene.to(
+            menuAnchor,
+            { scale: 1, duration: 0.75, ease: "power3.out" },
+            3.5
+          );
           menuCards.forEach((card, i) => {
-            if (i === MENU_CENTER) return;
-            const dir = i - MENU_CENTER;
+            const pos = menuFinalPos(i);
             scene!.to(
               card,
-              { x: dir * MENU_STEP, duration: 0.7 },
-              3.5 + Math.abs(dir) * 0.08
+              {
+                x: pos.x,
+                y: pos.y,
+                width: finalW,
+                height: finalH,
+                duration: 0.75,
+                ease: "back.out(1.35)",
+              },
+              3.5 + Math.abs(i - MENU_CENTER) * 0.06
             );
           });
-          scene.to(menuCta, { opacity: 1, y: 0, duration: 0.4 }, 4.05);
+          scene.to(
+            menuTags,
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.45,
+              ease: "back.out(2)",
+              stagger: 0.1,
+            },
+            4.2
+          );
+          scene.to(menuCta, { opacity: 1, y: 0, duration: 0.4 }, 4.55);
 
           ScrollTrigger.refresh();
         }
@@ -377,11 +424,10 @@ export default function Hero() {
     >
       <div
         data-hero-heading
-        className="pointer-events-none absolute inset-x-0 top-0 z-20 flex flex-col items-center px-6 pt-[76px] text-center md:pt-[92px]"
+        className="pointer-events-none absolute inset-x-0 top-[26%] z-20 flex flex-col items-center px-5 text-center sm:top-0 sm:px-6 sm:pt-[60px] md:pt-[68px]"
       >
-      
-        <h1 className="font-heading max-w-[900px] text-[clamp(36px,6.5vw,72px)] font-extrabold leading-[1.02] tracking-[-0.03em] text-foreground">
-          {["Shally's", "Pastries"].map((word, i) => (
+        <h1 className="font-heading max-w-[900px] text-[40px] font-extrabold leading-[1.02] tracking-[-0.03em] text-foreground sm:text-[clamp(36px,6.5vw,72px)]">
+          {["Shally", "Pastries"].map((word, i) => (
             <span
               key={`${word}-${i}`}
               data-hero-word
@@ -391,35 +437,46 @@ export default function Hero() {
             </span>
           ))}
         </h1>
-     
+        <p
+          data-hero-copy
+          className="mt-3 max-w-[300px] font-body text-[15px] leading-relaxed text-muted sm:mt-4 sm:max-w-md sm:text-[15px]"
+        >
+          Cakes, pastries, training, deliveries, and the business behind them.
+        </p>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 top-[81%] z-20 flex flex-col items-center px-6 text-center">
+      <div className="pointer-events-none absolute inset-x-0 top-[68%] z-20 flex flex-col items-center px-5 text-center sm:top-[78%] sm:px-6 md:top-[81%]">
         <div
           data-hero-cta
-          className="pointer-events-auto mt-5 flex flex-wrap items-center justify-center gap-3 md:mt-6 md:gap-4"
+          className="pointer-events-auto flex flex-col items-center"
         >
-          <a
-            href="/menu"
-            className="rounded-full bg-foreground px-6 py-3 font-body text-[14px] font-semibold text-background transition-opacity hover:opacity-85 md:px-7 md:py-3.5 md:text-[15px]"
-          >
-            Order now
-          </a>
-          <a
-            href="/trainings"
-            className="rounded-full px-5 py-3 font-body text-[14px] font-medium text-foreground transition-colors hover:bg-hover md:py-3.5 md:text-[15px]"
-          >
-            Trainings
-          </a>
+          <p className="mb-4 max-w-[280px] font-body text-[14px] leading-relaxed text-muted sm:hidden">
+            Order pastries, apply for training, book a bike delivery, or explore
+            investment opportunities.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:mt-5 sm:gap-3 md:mt-6 md:gap-4">
+            <a
+              href="/shop"
+              className="rounded-full bg-foreground px-5 py-2.5 font-body text-[14px] font-semibold text-background transition-opacity hover:opacity-85 sm:px-6 sm:py-3 sm:text-[14px] md:px-7 md:py-3.5 md:text-[15px]"
+            >
+              Shop now
+            </a>
+            <a
+              href="#businesses"
+              className="rounded-full px-4 py-2.5 font-body text-[14px] font-medium text-foreground transition-colors hover:bg-hover sm:px-5 sm:py-3 sm:text-[14px] md:py-3.5 md:text-[15px]"
+            >
+              See what we do
+            </a>
+          </div>
         </div>
       </div>
 
       <div
         data-sc-layer
-        className="pointer-events-none absolute inset-0 z-20 px-6 pt-[104px] md:px-16 md:pt-[132px]"
+        className="pointer-events-none absolute inset-0 z-20 px-6 pt-[80px] md:px-16 md:pt-[100px]"
       >
         <p className="mb-3 font-body text-[11px] font-semibold tracking-[3px] text-muted-light uppercase">
-          From our kitchen
+          Meet the Shally businesses
         </p>
         <h2 className="font-heading max-w-[560px] text-[clamp(30px,5.6vw,58px)] font-extrabold leading-[1.05] tracking-[-0.03em]">
           {SC_HEADING.map((w, i) => (
@@ -437,8 +494,8 @@ export default function Hero() {
 
         <div data-sc-copy className="pointer-events-auto mt-6 max-w-[320px] md:mt-8">
           <p className="font-body text-[14px] leading-[1.65] text-muted">
-            Birthday cakes, meat pies, donuts, burgers, and full event trays —
-            baked fresh in Uselu. Join a training or book your next celebration.
+            Shally Pastries, Shally Pastries Training, Shally Logistics, and
+            Shally Investments each have a clear service and a page of their own.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3 md:mt-7">
             <a
@@ -448,10 +505,10 @@ export default function Hero() {
               See trainings
             </a>
             <a
-              href="/contact"
+              href="/logistics"
               className="rounded-full bg-hover px-5 py-3 font-body text-[14px] font-medium text-foreground transition-colors hover:opacity-80"
             >
-              Contact us
+              Logistics
             </a>
           </div>
         </div>
@@ -460,7 +517,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-10">
         <div
           data-stack
-          className="absolute top-[60%] left-1/2 h-0 w-0 will-change-transform"
+          className="absolute top-[48%] left-1/2 h-0 w-0 will-change-transform sm:top-[56%] md:top-[60%]"
         >
           {CARD_IMAGES.map((src, i) => (
             <div
@@ -566,29 +623,36 @@ export default function Hero() {
       <div data-menu-layer className="pointer-events-none absolute inset-0 z-30">
         <div
           data-menu-heading
-          className="absolute inset-x-0 top-[10%] px-6 text-center"
+          className="absolute inset-x-0 top-[7%] px-5 text-center sm:top-[10%] sm:px-6"
         >
-        
-          <h2 className="font-heading text-[clamp(28px,4.5vw,48px)] font-extrabold tracking-[-0.03em] text-foreground">
+          <h2 className="font-heading text-[clamp(24px,6.5vw,48px)] font-extrabold tracking-[-0.03em] text-foreground">
             Favourites from the oven
           </h2>
         </div>
 
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center pt-6 sm:pt-0">
           <div data-menu-anchor className="relative h-0 w-0">
-            {MENU_IMAGES.map((src, i) => (
+            {MENU_IMAGES.map((item, i) => (
               <div
                 key={i}
                 data-menu-card
-                className="absolute top-0 left-0 h-[220px] w-[192px] overflow-hidden rounded-[16px] shadow-[0_24px_60px_rgba(0,0,0,0.22)] will-change-transform"
+                className="absolute top-0 left-0 w-[192px] overflow-hidden rounded-[16px] shadow-[0_24px_60px_rgba(0,0,0,0.22)] will-change-transform sm:rounded-[18px]"
+                style={{ height: MENU_CARD_H }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={src}
-                  alt=""
+                  src={item.src}
+                  alt={item.label}
                   draggable={false}
                   className="h-full w-full object-cover"
                 />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" />
+                <span
+                  data-menu-tag
+                  className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3.5 py-1.5 font-heading text-[12px] font-semibold text-[#111] shadow-[0_6px_18px_rgba(0,0,0,0.25)] backdrop-blur sm:bottom-4 sm:left-4 sm:px-4 sm:py-2 sm:text-[13px]"
+                >
+                  {item.label}
+                </span>
               </div>
             ))}
           </div>
@@ -596,13 +660,13 @@ export default function Hero() {
 
         <div
           data-menu-cta
-          className="pointer-events-auto absolute inset-x-0 bottom-[14%] flex justify-center"
+          className="pointer-events-auto absolute inset-x-0 bottom-[5%] flex justify-center px-5 sm:bottom-[12%] sm:px-0 md:bottom-[14%]"
         >
           <Link
-            href="/menu"
-            className="group inline-flex items-center gap-2.5 rounded-full bg-foreground py-3.5 pr-3.5 pl-7 font-heading text-[15px] font-semibold text-background shadow-[0_14px_34px_rgba(0,0,0,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(0,0,0,0.4)]"
+            href="/shop"
+            className="group inline-flex items-center gap-2.5 rounded-full bg-foreground py-3 pr-3 pl-6 font-heading text-[14px] font-semibold text-background shadow-[0_14px_34px_rgba(0,0,0,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(0,0,0,0.4)] sm:py-3.5 sm:pr-3.5 sm:pl-7 sm:text-[15px]"
           >
-            See full menu
+            Order online
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 transition-colors duration-300 group-hover:bg-white/30">
               <ArrowUpRight
                 size={16}

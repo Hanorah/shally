@@ -121,16 +121,16 @@ export default function Story() {
   return (
     <section
       ref={rootRef}
-      className="relative z-10 flex min-h-[920px] flex-col items-center justify-center overflow-hidden bg-background px-6 py-24 md:min-h-[1000px]"
+      className="relative z-10 flex min-h-[720px] flex-col items-center justify-center overflow-hidden bg-background px-5 py-16 sm:px-6 sm:py-20 md:min-h-[1000px] md:py-24"
     >
       {/* Card stack / fan */}
-      <div className="relative mb-10 h-[220px] w-full max-w-lg md:mb-14 md:h-[260px]">
+      <div className="relative mb-8 h-[180px] w-full max-w-lg sm:mb-10 sm:h-[220px] md:mb-14 md:h-[260px]">
         <div className="absolute top-1/2 left-1/2 h-0 w-0">
           {STORY_CARDS.map((src, i) => (
             <div
               key={src}
               data-story-card
-              className="absolute top-0 left-0 h-[180px] w-[130px] overflow-hidden rounded-[18px] shadow-[0_20px_50px_rgba(0,0,0,0.18)] md:h-[220px] md:w-[158px]"
+              className="absolute top-0 left-0 h-[150px] w-[108px] overflow-hidden rounded-[16px] shadow-[0_20px_50px_rgba(0,0,0,0.18)] sm:h-[180px] sm:w-[130px] sm:rounded-[18px] md:h-[220px] md:w-[158px]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={src} alt="" className="h-full w-full object-cover" />
@@ -139,42 +139,44 @@ export default function Story() {
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-3xl text-center">
-        <span className="absolute top-[-28px] left-0 rounded-full bg-foreground px-3.5 py-1.5 font-heading text-[12px] font-semibold text-background md:left-[-20px]">
-          @shallys
-        </span>
-        <span className="absolute top-[-28px] right-0 rounded-full bg-[#4D7EFF] px-3.5 py-1.5 font-heading text-[12px] font-semibold text-white md:right-[-20px]">
-          @kitchen
-        </span>
+      <div className="relative mx-auto max-w-3xl px-1 text-center">
+        <div className="mb-5 flex items-center justify-center gap-2 sm:mb-0">
+          <span className="rounded-full bg-foreground px-3 py-1.5 font-heading text-[11px] font-semibold text-background sm:absolute sm:top-[-28px] sm:left-0 sm:px-3.5 sm:text-[12px] md:left-[-20px]">
+            @shallys
+          </span>
+          <span className="rounded-full bg-[#4D7EFF] px-3 py-1.5 font-heading text-[11px] font-semibold text-white sm:absolute sm:top-[-28px] sm:right-0 sm:px-3.5 sm:text-[12px] md:right-[-20px]">
+            @kitchen
+          </span>
+        </div>
 
         <p
           data-story-para
-          className="font-heading text-[clamp(22px,3.4vw,34px)] font-bold leading-[1.45] tracking-[-0.02em]"
+          className="font-heading text-[clamp(20px,5.2vw,34px)] font-bold leading-[1.45] tracking-[-0.02em]"
         >
-          {words("Whether you're celebrating a moment to share your table", "text-foreground")}
-          {words("/ or craving", "text-muted-light")}
-          {words("unique", "text-[#4ECDC4]")}
-          {words("flavors", "text-foreground")}
+          {words("Whether you're celebrating a moment,", "text-foreground")}
+          {words("learning a craft,", "text-muted-light")}
+          {words("moving", "text-[#4ECDC4]")}
+          {words("goods,", "text-foreground")}
           <span data-story-word className="mx-1 inline-flex align-middle">
             <PaintBucket size={22} className="text-foreground" />
           </span>{" "}
-          {words("connects", "text-muted-light")}
-          {words("you to a world of fresh baking", "text-muted-light")}
+          {words("or getting an order", "text-muted-light")}
+          {words("where it needs to go", "text-muted-light")}
           <span data-story-word className="mx-1 inline-flex align-middle">
             <Tag size={20} className="fill-[#FF6A2B] text-[#FF6A2B]" />
           </span>{" "}
-          {words("& catering.", "text-muted-light")}
+          {words("— Shally Pastries can help.", "text-muted-light")}
         </p>
       </div>
 
-      <div className="mt-14 flex items-center gap-5 text-muted-light">
-        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-border">
+      <div className="mt-10 flex items-center gap-4 text-muted-light sm:mt-14 sm:gap-5">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-border sm:h-10 sm:w-10">
           <Orbit size={16} />
         </span>
-        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-border">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-border sm:h-10 sm:w-10">
           <LayoutGrid size={16} />
         </span>
-        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-border">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-border sm:h-10 sm:w-10">
           <Sunset size={16} />
         </span>
       </div>

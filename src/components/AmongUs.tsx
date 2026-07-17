@@ -73,31 +73,29 @@ export default function AmongUs() {
   ];
 
   return (
-    <section className="relative z-10 overflow-hidden bg-background py-16 md:py-28">
-      <ThumbRow images={top} duration={48} amplitude={32} invertArch />
+    <section className="relative z-10 overflow-hidden bg-background py-12 sm:py-16 md:py-28">
+      <div className="py-2 sm:py-3">
+        <ThumbRow images={top} duration={48} amplitude={18} invertArch />
+      </div>
 
-      <div className="relative z-20 mx-auto max-w-4xl px-6 py-12 text-center md:py-16">
-        
-
-    
-
-        <h2 className="font-heading text-[clamp(32px,5vw,52px)] font-medium leading-[1.08] tracking-[-0.035em] text-foreground">
-        Meat pies, fresh donuts, burgers, custom cakes — and a kitchen full of
-          students learning the craft. 
+      <div className="relative z-20 mx-auto max-w-4xl px-5 py-10 text-center sm:px-6 sm:py-12 md:py-16">
+        <h2 className="font-heading text-[clamp(26px,6.5vw,52px)] font-medium leading-[1.12] tracking-[-0.035em] text-foreground">
+          Fresh bakes, training days, and delivery moments from the work behind
+          Shally Pastries.
         </h2>
-
-       
 
         <a
           href="/work"
-          className="mt-7 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-5 py-2.5 font-heading text-sm font-semibold text-foreground transition-colors hover:bg-hover"
+          className="mt-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-5 py-2.5 font-heading text-sm font-semibold text-foreground transition-colors hover:bg-hover sm:mt-7"
         >
           See our work
           <span aria-hidden>→</span>
         </a>
       </div>
 
-      <ThumbRow images={bottom} reverse duration={40} amplitude={30} />
+      <div className="py-2 sm:py-3">
+        <ThumbRow images={bottom} reverse duration={40} amplitude={16} />
+      </div>
     </section>
   );
 }

@@ -13,7 +13,7 @@ export default function PageShell({
     <div className={`relative min-h-full bg-background ${className}`}>
       <BlurBlobs />
       <Navbar />
-      <main className="relative z-10 pt-24">{children}</main>
+      <main className="relative z-10 pt-16">{children}</main>
       <Footer />
     </div>
   );

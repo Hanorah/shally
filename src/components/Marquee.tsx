@@ -31,16 +31,15 @@ export default function Marquee() {
   };
 
   return (
-    <section className="relative z-10 overflow-hidden bg-background py-16 md:py-24">
-      <div className="mx-auto mb-12 flex max-w-6xl items-start justify-between gap-6 px-8">
+    <section className="relative z-10 overflow-hidden bg-background py-12 sm:py-16 md:py-24">
+      <div className="mx-auto mb-8 flex max-w-6xl items-start justify-between gap-4 px-5 sm:mb-12 sm:gap-6 sm:px-8">
         <div>
-          <h2 className="font-heading text-[clamp(32px,5vw,56px)] font-extrabold tracking-[-0.03em] text-foreground">
+          <h2 className="font-heading text-[clamp(28px,7vw,56px)] font-extrabold tracking-[-0.03em] text-foreground">
             Loved at the <span className="text-muted-light">best tables.</span>
           </h2>
-          <p className="mt-3 max-w-md font-body text-[15px] leading-relaxed text-muted">
-            From backyard birthdays to big celebrations — families and planners
-            across Benin City trust Shally&apos;s for cakes, trays, and fresh
-            pastries.
+          <p className="mt-3 max-w-md font-body text-[14px] leading-relaxed text-muted sm:text-[15px]">
+            From birthdays to event tables, people come to Shally Pastries for
+            food that looks good, travels well, and tastes familiar.
           </p>
         </div>
 
@@ -66,7 +65,7 @@ export default function Marquee() {
 
       <div
         ref={scrollerRef}
-        className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-8 scrollbar-none"
+        className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 scrollbar-none sm:px-8"
         style={{ scrollbarWidth: "none" }}
       >
         {TRUSTED_LOGOS.map((name) => (

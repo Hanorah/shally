@@ -13,7 +13,7 @@ function bentoSpan(i: number) {
   const m = i % 6;
   if (m === 0) return "col-span-2 row-span-2";
   if (m === 3) return "row-span-2";
-  if (m === 5) return "sm:col-span-2";
+  if (m === 5) return "col-span-2 sm:col-span-2 lg:col-span-2";
   return "";
 }
 
@@ -52,38 +52,38 @@ export default function WorkView() {
   }, [active]);
 
   return (
-    <div className="pb-24">
-      <div className="px-6 md:px-16">
+    <div className="pb-20 sm:pb-24">
+      <div className="px-5 sm:px-6 md:px-16">
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <p className="mb-3 font-heading text-[11px] font-medium tracking-[2.5px] text-muted-light uppercase">
               Gallery
             </p>
-            <h1 className="font-heading text-[clamp(36px,6vw,64px)] font-extrabold tracking-[-0.035em] text-foreground">
+            <h1 className="font-heading text-[clamp(32px,7vw,64px)] font-extrabold tracking-[-0.035em] text-foreground">
               Our work
             </h1>
-            <p className="mt-4 max-w-xl font-body text-[16px] leading-relaxed text-muted">
-              Custom cakes, everyday favourites, event trays, and students in
-              training — a peek into the Shally&apos;s kitchen.
+            <p className="mt-4 max-w-xl font-body text-[15px] leading-relaxed text-muted sm:text-[16px]">
+              Custom cakes, everyday favourites, event trays, and training days —
+              a closer look at the work behind Shally Pastries.
             </p>
           </Reveal>
         </div>
       </div>
 
-      <div className="mt-12">
-        <MarqueeGallery images={topRow} duration={48} amplitude={30} invertArch />
+      <div className="mt-10 sm:mt-12">
+        <MarqueeGallery images={topRow} duration={48} amplitude={18} invertArch />
       </div>
 
-      <div className="px-6 md:px-16">
+      <div className="px-5 sm:px-6 md:px-16">
         <div className="mx-auto max-w-6xl">
-          <Reveal y={16} className="mt-12">
-            <div className="flex flex-wrap gap-2.5">
+          <Reveal y={16} className="mt-10 sm:mt-12">
+            <div className="flex flex-wrap gap-2">
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
                   type="button"
                   onClick={() => setActive(cat)}
-                  className={`rounded-full border px-4 py-2 font-heading text-[13px] font-semibold transition-all duration-200 ${
+                  className={`rounded-full border px-3.5 py-2 font-heading text-[12px] font-semibold transition-all duration-200 sm:px-4 sm:text-[13px] ${
                     active === cat
                       ? "border-transparent bg-foreground text-background"
                       : "border-border bg-surface text-foreground hover:bg-hover"
@@ -97,12 +97,12 @@ export default function WorkView() {
 
           <div
             ref={gridRef}
-            className="mt-8 grid auto-rows-[150px] grid-cols-2 gap-4 [grid-auto-flow:dense] sm:auto-rows-[180px] lg:grid-cols-4"
+            className="mt-6 grid auto-rows-[120px] grid-cols-2 gap-3 [grid-auto-flow:dense] sm:mt-8 sm:auto-rows-[180px] sm:gap-4 lg:grid-cols-4"
           >
             {items.map((item, i) => (
               <article
                 key={item.title}
-                className={`group relative overflow-hidden rounded-2xl border border-border bg-surface transition-shadow duration-300 hover:shadow-[0_28px_60px_rgba(0,0,0,0.2)] ${bentoSpan(i)}`}
+                className={`group relative overflow-hidden rounded-xl border border-border bg-surface transition-shadow duration-300 hover:shadow-[0_28px_60px_rgba(0,0,0,0.2)] sm:rounded-2xl ${bentoSpan(i)}`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -111,11 +111,11 @@ export default function WorkView() {
                   className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-110"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-95" />
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-1 p-4 transition-transform duration-300 group-hover:translate-y-0">
-                  <p className="font-heading text-[10px] font-semibold tracking-[1.5px] text-brand-lime uppercase">
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-1 p-3 transition-transform duration-300 group-hover:translate-y-0 sm:p-4">
+                  <p className="font-heading text-[9px] font-semibold tracking-[1.5px] text-brand-lime uppercase sm:text-[10px]">
                     {item.category}
                   </p>
-                  <h2 className="mt-0.5 font-heading text-[14px] font-semibold text-white sm:text-[15px]">
+                  <h2 className="mt-0.5 font-heading text-[13px] font-semibold text-white sm:text-[15px]">
                     {item.title}
                   </h2>
                 </div>
@@ -125,13 +125,13 @@ export default function WorkView() {
         </div>
       </div>
 
-      <div className="mt-12">
-        <MarqueeGallery images={bottomRow} reverse duration={40} amplitude={28} />
+      <div className="mt-10 sm:mt-12">
+        <MarqueeGallery images={bottomRow} reverse duration={40} amplitude={16} />
       </div>
 
-      <div className="px-6 md:px-16">
+      <div className="px-5 sm:px-6 md:px-16">
         <div className="mx-auto max-w-6xl">
-          <Reveal className="mt-14 text-center" y={24}>
+          <Reveal className="mt-12 text-center sm:mt-14" y={24}>
             <p className="font-body text-sm text-muted">
               Want something like this for your next event?
             </p>

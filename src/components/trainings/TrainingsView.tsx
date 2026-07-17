@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { Check, GraduationCap } from "lucide-react";
-import { PACKAGES, COMMUNITY_IMAGES, SITE } from "@/lib/constants";
+import { PACKAGES, COMMUNITY_IMAGES } from "@/lib/constants";
 import { Reveal, RevealGroup } from "@/components/Reveal";
+import TrainingApplyDrawer from "@/components/trainings/TrainingApplyDrawer";
 
 const bannerBits = [
   { type: "text" as const, value: "Meat pies" },
@@ -16,19 +18,28 @@ const bannerBits = [
 ];
 
 export default function TrainingsView() {
+  const [applyOpen, setApplyOpen] = useState(false);
+  const [applyPackage, setApplyPackage] = useState<string>(PACKAGES[1].name);
+
+  const openApplication = (packageName: string) => {
+    setApplyPackage(packageName);
+    setApplyOpen(true);
+  };
+
   return (
-    <div className="px-6 pb-24 md:px-16">
+    <div className="px-5 pb-20 sm:px-6 sm:pb-24 md:px-16">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="mb-3 font-heading text-[11px] font-medium tracking-[2.5px] text-muted-light uppercase">
-            Pay to learn
+            Shally Pastries Training
           </p>
           <h1 className="font-heading text-[clamp(36px,6vw,64px)] font-extrabold tracking-[-0.035em] text-foreground">
-            Baking trainings
+            Learn the work properly
           </h1>
           <p className="mt-4 max-w-xl font-body text-[16px] leading-relaxed text-muted">
-            Learn meat pies, donuts, cakes, and event trays from the kitchen that
-            feeds Benin City. Pick a package, pay, and join the next cohort.
+            Practical classes for people who want to bake better, sell better, or
+            start from scratch. For longer programmes, accommodation is available
+            so students can stay close and focus.
           </p>
         </Reveal>
 
@@ -40,7 +51,7 @@ export default function TrainingsView() {
           {PACKAGES.map((pkg) => (
             <article
               key={pkg.name}
-              className={`group relative flex flex-col rounded-[24px] border p-8 transition-all duration-300 ${
+              className={`group relative flex flex-col rounded-[22px] border p-6 transition-all duration-300 sm:rounded-[24px] sm:p-8 ${
                 pkg.featured
                   ? "border-transparent bg-brand-orange text-white shadow-[0_24px_60px_rgba(255,106,43,0.35)] md:-translate-y-3 hover:md:-translate-y-5"
                   : "border-border bg-surface text-foreground hover:-translate-y-2 hover:shadow-[0_28px_60px_rgba(0,0,0,0.12)]"
@@ -94,21 +105,64 @@ export default function TrainingsView() {
                   </li>
                 ))}
               </ul>
-              <a
-                href={SITE.whatsapp}
-                target="_blank"
-                rel="noreferrer"
+              <button
+                type="button"
+                onClick={() => openApplication(pkg.name)}
                 className={`relative mt-8 inline-flex justify-center rounded-full px-5 py-3 text-center font-heading text-sm font-semibold transition-transform hover:scale-[1.03] ${
                   pkg.featured
                     ? "bg-white text-[#111]"
                     : "bg-foreground text-background"
                 }`}
               >
-                Enrol via WhatsApp
-              </a>
+                Apply for this class
+              </button>
             </article>
           ))}
         </RevealGroup>
+
+        <Reveal className="mt-16" y={30}>
+          <div className="grid gap-8 overflow-hidden rounded-[28px] border border-border bg-surface md:grid-cols-2">
+            <div className="p-8 sm:p-10">
+              <p className="font-heading text-[11px] font-semibold tracking-[2.5px] text-muted-light uppercase">
+                Accommodation included
+              </p>
+              <h2 className="mt-3 font-heading text-[clamp(24px,3vw,34px)] font-extrabold tracking-tight text-foreground">
+                A place to stay while you train
+              </h2>
+              <p className="mt-4 font-body text-[15px] leading-relaxed text-muted">
+                Students coming for longer programmes can request apartment stay
+                for the training period. It keeps the routine simple: wake up,
+                train, practise, rest, repeat.
+              </p>
+              <ul className="mt-6 space-y-3">
+                {[
+                  "Stay for the full programme length",
+                  "Close to training — less travel stress",
+                  "Ideal for students coming from out of town",
+                ].map((line) => (
+                  <li
+                    key={line}
+                    className="flex items-start gap-2.5 font-body text-sm text-foreground"
+                  >
+                    <Check
+                      size={16}
+                      className="mt-0.5 shrink-0 text-brand-green"
+                    />
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="relative min-h-[260px] bg-surface-muted md:min-h-full">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1000&h=1200&fit=crop&q=80"
+                alt="Comfortable apartment stay for trainees"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
+          </div>
+        </Reveal>
 
         <Reveal className="mt-16" y={30} scale={0.98}>
           <div className="overflow-hidden rounded-[22px] bg-brand-lime">
@@ -152,9 +206,9 @@ export default function TrainingsView() {
           </Reveal>
           <RevealGroup className="grid gap-4 sm:grid-cols-3" y={32}>
             {[
-              "Choose a package that fits your goals.",
-              `Call or WhatsApp ${SITE.phone} to reserve your seat.`,
-              "Show up, learn hands-on, leave with skills (and recipes).",
+              "Choose the package that matches your current level.",
+              "Fill the short application form so we know what you need.",
+              "We confirm availability, accommodation, and payment details.",
             ].map((step, i) => (
               <div
                 key={step}
@@ -171,6 +225,12 @@ export default function TrainingsView() {
           </RevealGroup>
         </div>
       </div>
+
+      <TrainingApplyDrawer
+        open={applyOpen}
+        onClose={() => setApplyOpen(false)}
+        initialPackage={applyPackage}
+      />
     </div>
   );
 }

@@ -4,10 +4,11 @@ import Hero from "@/components/Hero";
 import Gateway from "@/components/Gateway";
 import Marquee from "@/components/Marquee";
 import Story from "@/components/Story";
-import Vision from "@/components/Vision";
 import AmongUs from "@/components/AmongUs";
 import Marketplace from "@/components/Marketplace";
 import Membership from "@/components/Membership";
+import LogisticsSection from "@/components/LogisticsSection";
+import InvestmentsSection from "@/components/InvestmentsSection";
 import FeatureCards from "@/components/FeatureCards";
 import Footer from "@/components/Footer";
 
@@ -22,10 +23,11 @@ export default function Home() {
         <Gateway />
         <Marquee />
         <Story />
-        <Vision />
-        <AmongUs />
         <Marketplace />
         <Membership />
+        <LogisticsSection />
+        <InvestmentsSection />
+        <AmongUs />
         <FeatureCards />
       </main>
 
