@@ -41,7 +41,7 @@ export default function InvestmentsSection() {
     <section
       id="investments"
       ref={ref}
-      className="relative z-10 bg-background px-5 py-8 sm:px-6 sm:py-16 md:px-16 md:py-20"
+      className="relative z-10 bg-background px-5 pt-4 pb-8 sm:px-6 sm:py-16 md:px-16 md:py-20"
     >
       <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[22px] bg-surface shadow-[0_1px_0_var(--border)] sm:rounded-[28px] lg:grid-cols-[1.05fr_0.95fr]">
         <div

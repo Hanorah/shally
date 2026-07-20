@@ -41,7 +41,7 @@ export default function LogisticsSection() {
     <section
       id="logistics"
       ref={ref}
-      className="relative z-10 bg-background px-5 py-10 sm:px-6 sm:py-16 md:px-16 md:py-20"
+      className="relative z-10 bg-background px-5 pt-10 pb-4 sm:px-6 sm:py-16 md:px-16 md:py-20"
     >
       <div className="mx-auto max-w-6xl">
         <div data-log-head className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
