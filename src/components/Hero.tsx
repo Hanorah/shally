@@ -10,6 +10,30 @@ import { CARD_IMAGES } from "@/lib/constants";
 gsap.registerPlugin(ScrollTrigger);
 
 const BRAND = "#6B2D4A";
+const BRAND_DARK = "#E8A4C0";
+
+function isDarkTheme() {
+  return document.documentElement.classList.contains("dark");
+}
+
+function heroInk(alpha: number) {
+  return isDarkTheme()
+    ? `rgba(244,241,238,${alpha})`
+    : `rgba(26,18,24,${alpha})`;
+}
+
+function scInk(accent: boolean, faded: boolean) {
+  if (accent) {
+    if (isDarkTheme()) {
+      return faded ? "rgba(232,164,192,0.22)" : BRAND_DARK;
+    }
+    return faded ? "rgba(107,45,74,0.16)" : BRAND;
+  }
+  if (isDarkTheme()) {
+    return faded ? "rgba(244,241,238,0.16)" : "#f4f1ee";
+  }
+  return faded ? "rgba(26,18,24,0.12)" : "#111111";
+}
 
 // Menu reveal (folded into the hero timeline for one continuous motion).
 // The three cards are IDENTICAL to the hero card — same image, same style —
@@ -194,9 +218,9 @@ export default function Hero() {
         );
         intro.fromTo(
           "[data-hero-word]",
-          { color: "rgba(26,18,24,0.13)", y: 14 },
+          { color: () => heroInk(0.18), y: 14 },
           {
-            color: "rgba(26,18,24,1)",
+            color: () => heroInk(1),
             y: 0,
             duration: 0.55,
             stagger: 0.09,
@@ -299,13 +323,9 @@ export default function Hero() {
             const accent = w.dataset.accent === "true";
             scene!.fromTo(
               w,
+              { color: () => scInk(accent, true) },
               {
-                color: accent
-                  ? "rgba(107,45,74,0.16)"
-                  : "rgba(26,18,24,0.12)",
-              },
-              {
-                color: accent ? BRAND : "#111",
+                color: () => scInk(accent, false),
                 duration: 0.35,
                 ease: "none",
               },
@@ -406,7 +426,28 @@ export default function Hero() {
           ScrollTrigger.refresh();
         }
 
+        const scLayer = root.querySelector<HTMLElement>("[data-sc-layer]");
+
+        const syncThemeColors = () => {
+          gsap.set("[data-hero-word]", { color: heroInk(1) });
+          const scVisible =
+            scLayer != null &&
+            parseFloat(getComputedStyle(scLayer).opacity) > 0.4;
+          if (!scVisible) return;
+          scWords.forEach((w) => {
+            const accent = w.dataset.accent === "true";
+            gsap.set(w, { color: scInk(accent, false) });
+          });
+        };
+
+        const themeObserver = new MutationObserver(syncThemeColors);
+        themeObserver.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["class"],
+        });
+
         return () => {
+          themeObserver.disconnect();
           scene?.scrollTrigger?.kill();
           scene?.kill();
         };
@@ -602,16 +643,11 @@ export default function Hero() {
           >
             <div
               data-sc-bubble
-              className="relative rounded-full bg-[#111] px-5 py-2 font-body text-[15px] font-semibold text-white"
+              className="relative rounded-full bg-foreground px-5 py-2 font-body text-[15px] font-semibold text-background"
             >
               Classes
               <span
-                className="absolute bottom-[-8px] left-6 block h-0 w-0"
-                style={{
-                  borderLeft: "6px solid transparent",
-                  borderRight: "6px solid transparent",
-                  borderTop: "10px solid #111",
-                }}
+                className="absolute bottom-[-8px] left-6 block h-0 w-0 border-x-[6px] border-t-[10px] border-x-transparent border-t-foreground"
               />
             </div>
           </div>

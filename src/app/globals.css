@@ -21,14 +21,14 @@
 }
 
 .dark {
-  --background: #121212;
-  --foreground: #ffffff;
-  --surface: #1a1a1a;
-  --surface-muted: #222222;
-  --muted: rgba(255, 255, 255, 0.55);
-  --muted-light: rgba(255, 255, 255, 0.4);
-  --border: rgba(255, 255, 255, 0.12);
-  --hover: rgba(255, 255, 255, 0.08);
+  --background: #141211;
+  --foreground: #f4f1ee;
+  --surface: #1c1917;
+  --surface-muted: #262220;
+  --muted: rgba(244, 241, 238, 0.58);
+  --muted-light: rgba(244, 241, 238, 0.42);
+  --border: rgba(244, 241, 238, 0.12);
+  --hover: rgba(244, 241, 238, 0.08);
 }
 
 @theme inline {
@@ -89,8 +89,19 @@ body {
 }
 
 .dark .grain::before {
-  opacity: 0.06;
+  opacity: 0.045;
   mix-blend-mode: soft-light;
+}
+
+.glass-nav {
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+}
+
+.dark .glass-nav {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
 }
 
 @keyframes marquee {
@@ -150,10 +161,4 @@ body {
 
 .drawer-step-in {
   animation: drawer-step-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.glass-nav {
-  background: color-mix(in srgb, var(--surface) 72%, transparent);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
 }
